@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.davidcheah.demo.model.User;
+import com.davidcheah.demo.service.LocaleService;
 import com.davidcheah.demo.service.UserService;
 
 @Controller
@@ -28,17 +29,29 @@ public class LoginController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	UserService service;
+	UserService userService;
+
+	@Autowired
+	LocaleService localeService;
 
 	@GetMapping("/")
 	public String handleAllRequest() {
-		return "redirect:/login";
+		return "redirect:/login?lang=en";
 	}
 
 	@GetMapping("/login")
-	public String showLoginPage(ModelMap model, HttpServletRequest request) {
+	public String showLoginPage(ModelMap model, HttpServletRequest request, @RequestParam(name = "lang") String lang) {
+		if (lang != null) {
+			System.out.println("setting locale");
+			localeService.setLocale(lang);
+		}
+
+		model = getTranslatedModel(model);
+
 		HttpSession session = request.getSession();
 		if (session.getAttribute("username") != null) {
+			System.out.println("go to welcome");
+
 			return "welcome";
 		}
 		return "login";
@@ -47,18 +60,23 @@ public class LoginController {
 	@PostMapping("/login")
 	public String handleLogin(ModelMap model, @RequestParam String username, @RequestParam String password,
 			HttpServletRequest request) {
+
+		model = getTranslatedModel(model);
+
 		logger.info("[handleLogin] username: " + username + " and password: " + password);
 		// Get user from database
-		User foundUser = service.validateUser(username, password);
+		User foundUser = userService.validateUser(username, password);
 		if (foundUser != null) {
 
 			// If user found, create new session
 			HttpSession session = request.getSession();
 			session.setAttribute("username", foundUser.getName());
 			session.setAttribute("roles", foundUser.getRoleList());
+
 			return "welcome";
 		}
-		model.put("errorMessage", "Invalid credentials");
+		model.put("errorMessage", localeService.getTranslatedString("login_invalid"));
+
 		return "login";
 	}
 
@@ -67,5 +85,19 @@ public class LoginController {
 		request.getSession().invalidate();
 
 		return "redirect:/";
+	}
+
+	private ModelMap getTranslatedModel(ModelMap model) {
+		model.put("welcome_name", localeService.getTranslatedString("welcome_name"));
+		model.put("welcome_role", localeService.getTranslatedString("welcome_role"));
+		model.put("welcome_logout", localeService.getTranslatedString("welcome_logout"));
+
+		model.put("login_signin", localeService.getTranslatedString("login_signin"));
+		model.put("login_username", localeService.getTranslatedString("login_username"));
+		model.put("login_password", localeService.getTranslatedString("login_password"));
+		model.put("login_submit", localeService.getTranslatedString("login_submit"));
+
+		return model;
+
 	}
 }

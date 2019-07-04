@@ -1,5 +1,8 @@
 package com.davidcheah.demo;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,7 @@ public class DemoApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		//populateDb();
+		//localeTest();
 	}
 
 	private void populateDb() {
@@ -52,6 +56,19 @@ public class DemoApplication implements CommandLineRunner {
 
 		// validateUser(user, password);
 	}
+	
+//	private void localeTest() {
+//		String lang = "en";
+//		String country = "US";
+//		
+//		Locale locale = new Locale(lang, country);
+//		
+//		ResourceBundle r = ResourceBundle.getBundle("message", locale);
+//		
+//		String str = r.getString("hello");
+//		System.out.println(str);
+//		
+//	}
 
 //	private void validateUser(User user, String password) {
 //		if (pwService.matches(password, user.getPassword())) {
