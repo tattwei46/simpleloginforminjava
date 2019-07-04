@@ -1,0 +1,23 @@
+
+//mysql
+create table user
+(
+   id bigint not null,
+   username varchar(255) not null,
+   password varchar(255),
+   roles varchar(255),
+   primary key(id)
+);
+
+// h2
+create table user
+(
+  id long not null,
+  username varchar(255) not null,
+  password varchar(255),
+  roles varchar(255),
+  primary key (id)
+);
+
+create user 'personuser'@'localhost' identified by 'YOUR_PASSWORD';
+grant all on person_example.* to 'personuser'@'localhost';
