@@ -1,17 +1,11 @@
 package com.davidcheah.demo;
 
-import java.util.Locale;
-import java.util.ResourceBundle;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import com.davidcheah.demo.dao.UserDao;
 import com.davidcheah.demo.model.User;
 import com.davidcheah.demo.service.PasswordService;
 import com.davidcheah.demo.service.UserService;

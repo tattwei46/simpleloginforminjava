@@ -42,7 +42,6 @@ public class LoginController {
 	@GetMapping("/login")
 	public String showLoginPage(ModelMap model, HttpServletRequest request, @RequestParam(name = "lang") String lang) {
 		if (lang != null) {
-			System.out.println("setting locale");
 			localeService.setLocale(lang);
 		}
 
@@ -50,7 +49,6 @@ public class LoginController {
 
 		HttpSession session = request.getSession();
 		if (session.getAttribute("username") != null) {
-			System.out.println("go to welcome");
 
 			return "welcome";
 		}
